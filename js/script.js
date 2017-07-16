@@ -1,8 +1,10 @@
 function log(msg){
   console.log(msg);
 }
-function showStatus(seat){
-	return (seat)? '[ ]' : '[x]';
+function showStatus(seat,seatId){
+	return (seat)? 
+		"<img id='"+seatId+"' class='seat' src='images/seat_available.jpg' alt='available' onclick='seatOnClick(this)'/>" :
+		"<img id='"+seatId+"' class='seat' src='images/seat_unavailable.jpg' alt='unavailable' onclick='seatOnClick(this)'/>" ;
 }
 function nextChar(c) {
     return String.fromCharCode(c.charCodeAt(0) + 1);
@@ -14,7 +16,8 @@ function displaySeats(seats, seatsDisplay){
 
 		for(var j = 0; j < seats[i].length; j++){
 			//log(seats[i][j]);
-			seatsDisplay.innerHTML += showStatus(seats[i][j]) + " " ;
+			var seatId = "row" + i + ";seat" + j;
+			seatsDisplay.innerHTML += showStatus(seats[i][j],seatId) + " " ;
 		}
 		seatsDisplay.innerHTML += '<br>';
 	}
@@ -56,11 +59,16 @@ function genSeats(){
 	}
 	return seats;
 }
+function seatOnClick(element){
+	log(element.id + " is " + element.alt);
+}
+
 // main 
 window.onload = function () {
 	log("start");
 	var seatsDisplay = document.getElementById('seatsDisplay');
 	var seats = genSeats();
+
 	// seats ok
 	// var seats = [
 	// 	[true,false,true,true,false,true],
@@ -92,6 +100,4 @@ window.onload = function () {
 		displaySeats(seats, seatsDisplay);
 		log(findSeats(seats,target))
 	};
-
-
 };
