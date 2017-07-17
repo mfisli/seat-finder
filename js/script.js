@@ -13,11 +13,10 @@ function nextChar(c) {
 // causing more <br> to be produced than needed. 
 function displaySeats(seats, seatsDisplay){
 	for (var i = 0; i < seats.length; i++){
-
 		for(var j = 0; j < seats[i].length; j++){
-			//log(seats[i][j]);
+			//log(i + " " + j );
 			var seatId = "row" + i + ";seat" + j;
-			seatsDisplay.innerHTML += showStatus(seats[i][j],seatId) + " " ;
+			seatsDisplay.innerHTML += showStatus(seats[i][j],seatId) + " ";
 		}
 		seatsDisplay.innerHTML += '<br>';
 	}
@@ -47,14 +46,13 @@ function genSeats(){
 	var row = Math.floor((Math.random() * 10) + 3);
 	var columns = Math.floor((Math.random() * 20) + 5);
 	var seats = new Array(row);
-	for (var k = 0; k < columns; k++){
+	for (var k = 0; k < row; k++){
 		seats[k] = [];
 	}
-
 	log("Generating seats with rows: " + row + " columns: " + columns);
 	for(var i = 0; i < row; i++){
 		for(var j = 0; j < columns; j++){
-			seats[i][j] = Math.random() >= 0.75;
+			seats[i][j] = Math.random() >= 0.75;  // unknown error when 0? 
 		}
 	}
 	return seats;
