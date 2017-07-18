@@ -9,10 +9,13 @@
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 <body>
-	<p> Seats </p>
-	<button type="button" onclick="seatOnClick()"> Search </button>
+	<p> How many adjacent seats do you need? </p>
+	<input type="number" id="adjacentSeatsNum" name="adjacentSeatsNum" min="1" max="9" value="2">
+
+	<button id="searchBtn" name="searchBtn" type="button"> Search </button>
+	<div id="searchResult"></div>
 	<hr>
-	<div id='seatsDisplay'></div>
+	<div id="seatsDisplay"></div>
 	<hr>
 </body>
 </html>

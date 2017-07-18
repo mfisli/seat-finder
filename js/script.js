@@ -6,32 +6,29 @@ function showStatus(seat,seatId){
 		"<img id='"+seatId+"' class='seat' src='images/seat_available.jpg' alt='available' onclick='seatOnClick(this)'/>" :
 		"<img id='"+seatId+"' class='seat' src='images/seat_unavailable.jpg' alt='unavailable' onclick='seatOnClick(this)'/>" ;
 }
-function nextChar(c) {
-    return String.fromCharCode(c.charCodeAt(0) + 1);
-}
-// todo: seats.length seems to get the value of the inner arrays
-// causing more <br> to be produced than needed. 
 function displaySeats(seats, seatsDisplay){
 	for (var i = 0; i < seats.length; i++){
+		seatsDisplay.innerHTML += (i + 1) + " ";
 		for(var j = 0; j < seats[i].length; j++){
-			//log(i + " " + j );
 			var seatId = "row" + i + ";seat" + j;
 			seatsDisplay.innerHTML += showStatus(seats[i][j],seatId) + " ";
 		}
 		seatsDisplay.innerHTML += '<br>';
 	}
 }
-// todo:
 // multiple return statements are considered bad style 
-function findSeats(seats, rowLengthTarget){
+function findSeats(seats, target){
+	log(seats);
+	log("target: " + target);
 	var curLength = 0;
-	var result = 'No seats vacant for ' + rowLengthTarget + " people.";
+	var result = 'No seats vacant for ' + target + " people.";
 	for (var i = 0; i < seats.length; i++){
 		for (var j = 0; j < seats[i].length; j++){
 			if(seats[i][j]){
 				curLength++;
-				if (curLength === rowLengthTarget){
-					result = "Vacant seats in row " + (i + 1) + " seats " + (j - curLength + 2) + " to " + (j + 1) + ".";
+				if (curLength == target){
+					result = "Vacant seats in row " + (i + 1) + 
+						" seats " + (j - curLength + 2) + " to " + (j + 1) + ".";
 					return result;
 				}
 			} else {
@@ -58,44 +55,32 @@ function genSeats(){
 	return seats;
 }
 function seatOnClick(element){
+	if(element.alt === 'available'){
+		element.src = 'images/seat_checked.jpg';
+		element.alt = 'checked';
+	} else if(element.alt === 'checked'){
+		element.src = 'images/seat_available.jpg';
+		element.alt = 'available';
+	}
 	log(element.id + " is " + element.alt);
-}
 
+}
+function searchBtnOnClick(seats, seatsDisplay) {
+	target = parseInt(document.getElementById("adjacentSeatsNum").value); // not parsing an int was expensive
+	searchResult = document.getElementById("searchResult");
+	if (seatsDisplay.innerHTML.length === 0){
+		log("Error: No Seats Data Found.");
+	} else {
+		//log(findSeats(seats,target));
+		searchResult.innerHTML = findSeats(seats,target);
+	};
+}
 // main 
+// Todo: highlight seats, header, footer, 
 window.onload = function () {
 	log("start");
-	var seatsDisplay = document.getElementById('seatsDisplay');
+	var seatsDisplay = document.getElementById("seatsDisplay");
 	var seats = genSeats();
-
-	// seats ok
-	// var seats = [
-	// 	[true,false,true,true,false,true],
-	// 	[false,true,true,true,false,false],
-	// 	[false,false,true,true,false,false]
-	// ];
-	// // seats ok more than one
-	// var seats = [
-	// 	[true,false,true,true,false,true],
-	// 	[false,true,true,true,false,false],
-	// 	[false,false,true,true,true,false]
-	// ];
-	// // no seats
-	// var seats = [
-	// 	[true,false,true,true,false,true],
-	// 	[true,false,true,true,false,false],
-	// 	[false,false,true,true,false,false]
-	// ];
-	// // seat wrapping 
-	// var seats = [
-	// 	[true,false,true,true,false,true],
-	// 	[true,true,false,true,false,false],
-	// 	[false,false,true,true,false,false]
-	// ];
-	target = 3;
-	if (seatsDisplay.innerHTML){
-		alert("No Seats Data Found.");
-	} else {
-		displaySeats(seats, seatsDisplay);
-		log(findSeats(seats,target))
-	};
+	displaySeats(seats, seatsDisplay);
+	document.getElementById("searchBtn").onclick = function() {searchBtnOnClick(seats,seatsDisplay)};
 };

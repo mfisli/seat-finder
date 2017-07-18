@@ -1,3 +1,7 @@
 img{
     width : 30px;
 }
+.seat:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=20); 
+}
