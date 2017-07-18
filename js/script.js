@@ -16,10 +16,26 @@ function displaySeats(seats, seatsDisplay){
 		seatsDisplay.innerHTML += '<br>';
 	}
 }
+function clearHighlights(seats){
+	for (var i = 0; i < seats.length; i++){
+		for (var j = 0; j < seats[i].length; j++){
+			var seatId = "row" + i + ";seat" + j;
+			document.getElementById(seatId).style.border = null;
+		}
+	}
+}
+
+function highlightSeats(seats,row,start,end){
+	clearHighlights(seats); 
+	log("row: " + row + " start: " + start + " end: " + end);
+	for(var i = start; i <= end; i++){
+		seat = document.getElementById("row" + row + ";seat" + i);
+		log(seat);
+		seat.style.border='2px solid gray';
+	}
+}
 // multiple return statements are considered bad style 
 function findSeats(seats, target){
-	log(seats);
-	log("target: " + target);
 	var curLength = 0;
 	var result = 'No seats vacant for ' + target + " people.";
 	for (var i = 0; i < seats.length; i++){
@@ -29,6 +45,7 @@ function findSeats(seats, target){
 				if (curLength == target){
 					result = "Vacant seats in row " + (i + 1) + 
 						" seats " + (j - curLength + 2) + " to " + (j + 1) + ".";
+					highlightSeats(seats,i,j - curLength + 1,j);
 					return result;
 				}
 			} else {
@@ -37,6 +54,7 @@ function findSeats(seats, target){
 		}
 		curLength = 0;
 	}
+	clearHighlights(seats); 
 	return result;
 }
 function genSeats(){
@@ -62,7 +80,7 @@ function seatOnClick(element){
 		element.src = 'images/seat_available.jpg';
 		element.alt = 'available';
 	}
-	log(element.id + " is " + element.alt);
+	//log(element.id + " is " + element.alt);
 
 }
 function searchBtnOnClick(seats, seatsDisplay) {
@@ -83,4 +101,4 @@ window.onload = function () {
 	var seats = genSeats();
 	displaySeats(seats, seatsDisplay);
 	document.getElementById("searchBtn").onclick = function() {searchBtnOnClick(seats,seatsDisplay)};
-};
+}
