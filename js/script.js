@@ -93,8 +93,23 @@ function searchBtnOnClick(seats, seatsDisplay) {
 		searchResult.innerHTML = findSeats(seats,target);
 	};
 }
+// ---------------------------------------------------------------------
+// Form Validation
+function validateNonEmpty(inputField, display){
+	if(inputField.value.length == 0 ){
+		if(display != null){
+			display.innerHTML = "Please enter a value."; 
+		}
+		return false; 
+	} else {
+		if(display != null){
+			display.innerHTML = ""; 
+		}
+		return true; 
+	}
+}
 // main 
-// Todo: highlight seats, header, footer, 
+// Todo: header, footer, form validation 
 window.onload = function () {
 	log("start");
 	var seatsDisplay = document.getElementById("seatsDisplay");
